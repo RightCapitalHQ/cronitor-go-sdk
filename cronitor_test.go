@@ -14,11 +14,13 @@ func getClient() Cronitor {
 func Test_PutMonitor(t *testing.T) {
 	var c = getClient()
 
-	err := c.PutMonitor(Monitor{
-		Key:      "hello_world",
-		Name:     "Hello World",
-		Type:     "job",
-		Schedule: "* * * * * *",
+	err := c.PutMonitors([]Monitor{
+		{
+			Key:      "hello_world",
+			Name:     "Hello World",
+			Type:     "job",
+			Schedule: "* * * * * *",
+		},
 	})
 
 	if err != nil {
