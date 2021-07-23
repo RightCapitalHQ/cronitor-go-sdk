@@ -20,8 +20,22 @@ func Test_PutMonitor(t *testing.T) {
 			Name:     "Hello World",
 			Type:     "job",
 			Schedule: "* * * * * *",
+			Notify: []string{
+				"webhook:https://google.com",
+			},
+			Metadata: `{"foo": {"aaa": "bbb"}}`,
 		},
 	})
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+}
+
+func Test_GetMonitor(t *testing.T) {
+	var c = getClient()
+
+	_, err := c.GetMonitor("hello_world")
 
 	if err != nil {
 		t.Errorf(err.Error())

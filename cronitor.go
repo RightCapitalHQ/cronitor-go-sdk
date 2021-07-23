@@ -53,6 +53,7 @@ func (c Cronitor) PutMonitors(monitors []Monitor) error {
 
 func (c Cronitor) DeleteMonitor(key string) error {
 	request, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s/monitors/%s", apiEndpoint, key), nil)
+
 	if err != nil {
 		return err
 	}
@@ -64,6 +65,7 @@ func (c Cronitor) DeleteMonitor(key string) error {
 	}
 
 	respBody, err := io.ReadAll(resp.Body)
+
 	if err != nil {
 		return err
 	}
@@ -76,10 +78,43 @@ func (c Cronitor) DeleteMonitor(key string) error {
 }
 
 func (c Cronitor) GetMonitor(key string) (*Monitor, error) {
-	return nil, nil
+	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/monitors/%s", apiEndpoint, key), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.sendHttpRequest(request)
+
+	if err != nil {
+		return nil, err
+	}
+
+	respBody, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("failed to get monitor: %s. response: %s", key, respBody)
+	}
+
+	var monitor *Monitor
+
+	err = json.Unmarshal(respBody, &monitor)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+	}
+
+	return monitor, nil
 }
 
 func (c Cronitor) sendHttpRequest(request *http.Request) (*http.Response, error) {
+	if c.ApiKey == "" {
+		return nil, fmt.Errorf("API key cannot be empty")
+	}
+
 	request.SetBasicAuth(c.ApiKey, "")
 	request.Header.Set("Cronitor-Version", apiVersion)
 

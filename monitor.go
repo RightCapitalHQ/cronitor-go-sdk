@@ -21,5 +21,5 @@ type Monitor struct {
 	ScheduleTolerance int         `json:"schedule_tolerance,omitempty"`
 	Timezone          string      `json:"timezone,omitempty"`
 	Tags              []string    `json:"tags,omitempty"`
-	Metadata          interface{} `json:"metadata,omitempty"`
+	Metadata          string      `json:"metadata,omitempty"`
 }
