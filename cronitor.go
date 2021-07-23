@@ -9,14 +9,15 @@ import (
 )
 
 const apiEndpoint = "https://cronitor.io/api"
+const apiVersion = "2020-09-01"
 
 type Cronitor struct {
 	ApiKey string
 }
 
-func (c Cronitor) PutMonitor(m Monitor) error {
+func (c Cronitor) PutMonitors(monitors []Monitor) error {
 	postData, err := json.Marshal(MonitorRequest{
-		Monitors: []Monitor{m},
+		Monitors: monitors,
 	})
 
 	if err != nil {
@@ -29,10 +30,9 @@ func (c Cronitor) PutMonitor(m Monitor) error {
 		return err
 	}
 
-	request.SetBasicAuth(c.ApiKey, "")
 	request.Header.Set("Content-Type", "application/json")
 
-	resp, err := http.DefaultClient.Do(request)
+	resp, err := c.sendHttpRequest(request)
 
 	if err != nil {
 		return err
@@ -57,9 +57,7 @@ func (c Cronitor) DeleteMonitor(key string) error {
 		return err
 	}
 
-	request.SetBasicAuth(c.ApiKey, "")
-
-	resp, err := http.DefaultClient.Do(request)
+	resp, err := c.sendHttpRequest(request)
 
 	if err != nil {
 		return err
@@ -79,4 +77,11 @@ func (c Cronitor) DeleteMonitor(key string) error {
 
 func (c Cronitor) GetMonitor(key string) (*Monitor, error) {
 	return nil, nil
+}
+
+func (c Cronitor) sendHttpRequest(request *http.Request) (*http.Response, error) {
+	request.SetBasicAuth(c.ApiKey, "")
+	request.Header.Set("Cronitor-Version", apiVersion)
+
+	return http.DefaultClient.Do(request)
 }
