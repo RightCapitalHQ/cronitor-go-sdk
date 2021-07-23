@@ -1,5 +1,7 @@
 package cronitor
 
+import "time"
+
 type MonitorRequest struct {
 	Monitors []Monitor `json:"monitors"`
 }
@@ -22,4 +24,14 @@ type Monitor struct {
 	Timezone          string      `json:"timezone,omitempty"`
 	Tags              []string    `json:"tags,omitempty"`
 	Metadata          string      `json:"metadata,omitempty"`
+
+	// Read-Only attributes
+	Created     time.Time `json:"created"`
+	Disabled    bool      `json:"disabled"`
+	Initialized bool      `json:"initialized"`
+	Passing     bool      `json:"passing"`
+	Paused      bool      `json:"paused"`
+	Running     bool      `json:"running"`
+	// TODO: The API is not returning status attribute like it described in docs
+	Status string `json:"status"`
 }
