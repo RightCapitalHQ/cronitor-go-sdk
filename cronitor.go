@@ -24,7 +24,7 @@ func (c Cronitor) PutMonitors(monitors []Monitor) error {
 		return err
 	}
 
-	request, err := http.NewRequest(http.MethodPut, apiEndpoint + "/monitors", bytes.NewReader(postData))
+	request, err := http.NewRequest(http.MethodPut, apiEndpoint+"/monitors", bytes.NewReader(postData))
 
 	if err != nil {
 		return err

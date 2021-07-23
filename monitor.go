@@ -5,8 +5,8 @@ type MonitorRequest struct {
 }
 
 type Monitor struct {
-	Key               string       `json:"key"`
-	Type              string       `json:"type"`
+	Key               string      `json:"key"`
+	Type              string      `json:"type"`
 	Name              string      `json:"name,omitempty"`
 	Assertions        []string    `json:"assertions,omitempty"`
 	FailureTolerance  int         `json:"failure_tolerance,omitempty"`

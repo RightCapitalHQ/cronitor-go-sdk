@@ -6,7 +6,7 @@ import (
 )
 
 func getClient() Cronitor {
-	return Cronitor {
+	return Cronitor{
 		ApiKey: os.Getenv("CRONITOR_API_KEY"),
 	}
 }
@@ -15,9 +15,9 @@ func Test_PutMonitor(t *testing.T) {
 	var c = getClient()
 
 	err := c.PutMonitor(Monitor{
-		Key: "hello_world",
-		Name: "Hello World",
-		Type: "job",
+		Key:      "hello_world",
+		Name:     "Hello World",
+		Type:     "job",
 		Schedule: "* * * * * *",
 	})
 
