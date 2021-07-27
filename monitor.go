@@ -32,6 +32,4 @@ type Monitor struct {
 	Passing     bool      `json:"passing"`
 	Paused      bool      `json:"paused"`
 	Running     bool      `json:"running"`
-	// TODO: The API is not returning status attribute like it described in docs
-	Status string `json:"status"`
 }
