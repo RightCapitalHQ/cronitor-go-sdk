@@ -45,7 +45,10 @@ func (c Cronitor) PutMonitors(monitors []Monitor) error {
 	}
 
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("failed to put monitor. response: %s", respBody)
+		return &StatusError{
+			StatusCode: resp.StatusCode,
+			message:    fmt.Sprintf("failed to put monitor. response: %s", respBody),
+		}
 	}
 
 	return nil
@@ -71,7 +74,10 @@ func (c Cronitor) DeleteMonitor(key string) error {
 	}
 
 	if resp.StatusCode != 204 {
-		return fmt.Errorf("failed to delete monitor: %s. response: %s", key, respBody)
+		return &StatusError{
+			StatusCode: resp.StatusCode,
+			message:    fmt.Sprintf("failed to delete monitor: %s. response: %s", key, respBody),
+		}
 	}
 
 	return nil
@@ -96,7 +102,10 @@ func (c Cronitor) GetMonitor(key string) (*Monitor, error) {
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("failed to get monitor: %s. response: %s", key, respBody)
+		return nil, &StatusError{
+			StatusCode: resp.StatusCode,
+			message:    fmt.Sprintf("failed to get monitor: %s. response: %s", key, respBody),
+		}
 	}
 
 	var monitor *Monitor
@@ -104,7 +113,10 @@ func (c Cronitor) GetMonitor(key string) (*Monitor, error) {
 	err = json.Unmarshal(respBody, &monitor)
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal response: %w", err)
+		return nil, &StatusError{
+			StatusCode: resp.StatusCode,
+			message:    fmt.Errorf("failed to unmarshal response: %w", err).Error(),
+		}
 	}
 
 	return monitor, nil
