@@ -143,6 +143,27 @@ func (c Cronitor) PauseMonitor(key string) error {
 	return nil
 }
 
+func (c Cronitor) UnPauseMonitor(key string) error {
+	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/monitors/%s/pause/0", apiEndpoint, key), nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.sendHttpRequest(request)
+	if err != nil {
+		return err
+	}
+
+	if resp != nil && resp.StatusCode != 200 {
+		return &StatusError{
+			StatusCode: resp.StatusCode,
+			message:    fmt.Sprintf("Failed to unpause monitor: %s .", key),
+		}
+	}
+
+	return nil
+}
+
 func (c Cronitor) sendHttpRequest(request *http.Request) (*http.Response, error) {
 	if c.ApiKey == "" {
 		return nil, fmt.Errorf("API key cannot be empty")

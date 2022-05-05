@@ -24,6 +24,7 @@ type Monitor struct {
 	Timezone          string      `json:"timezone,omitempty"`
 	Tags              []string    `json:"tags,omitempty"`
 	Metadata          string      `json:"metadata,omitempty"`
+	Environments      []string    `json:"environments,omitempty"`
 
 	// Read-Only attributes
 	Created     time.Time `json:"created"`
